@@ -22,9 +22,6 @@ const initContact = () => {
     const rootElement = document.querySelector(selectors.root);
 
     const inputElements = rootElement.querySelectorAll(selectors.input);
-    const nameInputElement = rootElement.querySelector(`${selectors.input}[data-type="name"]`)
-    const positionInputElement = rootElement.querySelector(`${selectors.input}[data-type="position"]`)
-    const phoneInputElement = rootElement.querySelector(`${selectors.input}[data-type="phone"]`)
 
     const addButtonElement = rootElement.querySelector(`${selectors.button}[data-action="add"]`);
     const clearButtonElement = rootElement.querySelector(`${selectors.button}[data-action="clear"]`);
@@ -137,6 +134,7 @@ const initContact = () => {
         clearAllContactsUI()
         resetAllCountDB()
         resetAllCountUI()
+        clearInput()
     };
 
     const addContact = () => {
