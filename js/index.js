@@ -30,86 +30,13 @@ const initContact = () => {
 
     const columnItemElements = rootElement.querySelectorAll(selectors.columnItem);
 
+    const getFirstLetter = (word) => word[0].toUpperCase();
+
     const clearInput = () => {
         inputElements.forEach((inputElement) => {
             inputElement.value = '';
         });
     };
-
-    const getFirstLetter = (word) => word[0].toUpperCase();
-
-    const validatePhone = (phone) => {
-        return /^\+\d{5,}$/.test(phone);
-    };
-
-    const validateName = (name) => {
-        return name.length >= 2;
-    };
-
-    const renderCount = (contactContainer, firstLetter) => {
-        const contactCount = contacts[firstLetter][0];
-        if (contactCount) {
-            let countElement = contactContainer.querySelector(".contact-count");
-            if (!countElement) {
-                countElement = document.createElement("span");
-                countElement.classList.add("contact-count");
-                contactContainer.prepend(countElement);
-            }
-            countElement.textContent = contactCount.count;
-            if (contactCount.count === 0) {
-                countElement.remove();
-            }
-        }
-    };
-
-    const removeContactDB = (id) => {
-        for (let key in contacts) {
-            contacts[key] = contacts[key].filter((contact) => contact.id !== id);
-            if (contacts[key][0].count !== 0) {
-                contacts[key][0].count -= 1;
-            }
-        }
-    };
-
-    const renderContacts = (contact, firstLetter) => {
-        let contactContainer = document.querySelector(`[data-first-letter="${firstLetter}"]`);
-
-        let contactElement = document.createElement("div");
-
-        contactContainer.classList.add('hasContacts');
-        contactElement.classList.add('added-contact', 'hidden');
-
-        contactElement.setAttribute('data-contact-id', contact.id);
-        contactElement.innerHTML =
-            `<p>id: ${contact.id} <br> name: ${contact.name} <br>phone: ${contact.phone} </p>
-        <br>
-        <span data-contacts-table-delete-contact class="delete-contact">X</span>`;
-
-        const contactElements = contactContainer.querySelectorAll('.added-contact');
-
-        if (contactElements.length > 0 && !contactElements[0].classList.contains('hidden')) {
-            contactElement.classList.remove('hidden');
-        } else {
-            contactElement.classList.add('hidden');
-        }
-
-        contactContainer.appendChild(contactElement);
-        renderCount(contactContainer, firstLetter);
-    };
-
-    const removeContactUI = (e) => {
-        if (e.target.classList.contains('delete-contact')) {
-            const contactParent = e.target.closest('.added-contact');
-            const contactContainer = contactParent.closest('.item__letter');
-            const firstLetter = contactContainer.dataset.firstLetter;
-            const contactId = parseInt(contactParent.dataset.contactId);
-
-            removeContactDB(contactId);
-            contactParent.remove();
-
-            renderCount(contactContainer, firstLetter);
-        }
-    }
 
     const clearAllContactsDB = () => {
         contacts = {...initialState}
@@ -117,16 +44,6 @@ const initContact = () => {
 
     const clearAllContactsUI = () => {
         document.querySelectorAll('.added-contact').forEach(div => div.remove());
-    }
-
-    const resetAllCountDB = () => {
-        for (let key in contacts) {
-            contacts[key][0].count = 0;
-        }
-    }
-
-    const resetAllCountUI = () => {
-        document.querySelectorAll('.contact-count').forEach(count => count.remove());
     }
 
     const clearContacts = () => {
@@ -137,31 +54,13 @@ const initContact = () => {
         clearInput()
     };
 
-    const addContact = () => {
-        checkValidate()
-        let name = inputElements[0].value;
-        let position = inputElements[1].value;
-        let phone = inputElements[2].value;
-
-        let contact = { id: Date.now(), name, position, phone };
-
-        let firstLetter = getFirstLetter(name);
-
-        contacts[firstLetter].push(contact);
-        contacts[firstLetter][0].count++;
-
-        renderContacts(contact, firstLetter);
-        clearInput();
+    const validatePhone = (phone) => {
+        return /^\+\d{5,}$/.test(phone);
     };
 
-    const toggleActive = (e) => {
-        if (e.target.classList.contains('item__letter')) {
-            const contactElements = e.currentTarget.querySelectorAll('.added-contact');
-            contactElements.forEach((contact) => {
-                contact.classList.toggle('hidden');
-            });
-        }
-    }
+    const validateName = (name) => {
+        return name.length >= 2;
+    };
 
     const checkValidate = () => {
         inputElements.forEach((input) => {
@@ -195,6 +94,107 @@ const initContact = () => {
                 : inputValue
         }
 
+    }
+
+    const renderCount = (contactContainer, firstLetter) => {
+        const contactCount = contacts[firstLetter][0];
+        if (contactCount) {
+            let countElement = contactContainer.querySelector(".contact-count");
+            if (!countElement) {
+                countElement = document.createElement("span");
+                countElement.classList.add("contact-count");
+                contactContainer.prepend(countElement);
+            }
+            countElement.textContent = contactCount.count;
+            if (contactCount.count === 0) {
+                countElement.remove();
+            }
+        }
+    };
+
+    const renderContacts = (contact, firstLetter) => {
+        let contactContainer = document.querySelector(`[data-first-letter="${firstLetter}"]`);
+
+        let contactElement = document.createElement("div");
+
+        contactContainer.classList.add('hasContacts');
+        contactElement.classList.add('added-contact', 'hidden');
+
+        contactElement.setAttribute('data-contact-id', contact.id);
+        contactElement.innerHTML =
+            `<p>id: ${contact.id} <br> name: ${contact.name} <br>phone: ${contact.phone} </p>
+        <br>
+        <span data-contacts-table-delete-contact class="delete-contact">X</span>`;
+
+        const contactElements = contactContainer.querySelectorAll('.added-contact');
+
+        if (contactElements.length > 0 && !contactElements[0].classList.contains('hidden')) {
+            contactElement.classList.remove('hidden');
+        } else {
+            contactElement.classList.add('hidden');
+        }
+
+        contactContainer.appendChild(contactElement);
+        renderCount(contactContainer, firstLetter);
+    };
+
+    const addContact = () => {
+        checkValidate()
+        let name = inputElements[0].value;
+        let position = inputElements[1].value;
+        let phone = inputElements[2].value;
+
+        let contact = { id: Date.now(), name, position, phone };
+
+        let firstLetter = getFirstLetter(name);
+
+        contacts[firstLetter].push(contact);
+        contacts[firstLetter][0].count++;
+
+        renderContacts(contact, firstLetter);
+        clearInput();
+    };
+
+    const removeContactDB = (id) => {
+        for (let key in contacts) {
+            contacts[key] = contacts[key].filter((contact) => contact.id !== id);
+            if (contacts[key][0].count !== 0) {
+                contacts[key][0].count -= 1;
+            }
+        }
+    };
+
+    const removeContactUI = (e) => {
+        if (e.target.classList.contains('delete-contact')) {
+            const contactParent = e.target.closest('.added-contact');
+            const contactContainer = contactParent.closest('.item__letter');
+            const firstLetter = contactContainer.dataset.firstLetter;
+            const contactId = parseInt(contactParent.dataset.contactId);
+
+            removeContactDB(contactId);
+            contactParent.remove();
+
+            renderCount(contactContainer, firstLetter);
+        }
+    }
+
+    const resetAllCountDB = () => {
+        for (let key in contacts) {
+            contacts[key][0].count = 0;
+        }
+    }
+
+    const resetAllCountUI = () => {
+        document.querySelectorAll('.contact-count').forEach(count => count.remove());
+    }
+
+    const toggleActive = (e) => {
+        if (e.target.classList.contains('item__letter')) {
+            const contactElements = e.currentTarget.querySelectorAll('.added-contact');
+            contactElements.forEach((contact) => {
+                contact.classList.toggle('hidden');
+            });
+        }
     }
 
     addButtonElement.addEventListener('click', addContact);
