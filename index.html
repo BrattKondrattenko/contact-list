@@ -1,117 +1,115 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="./scss/base.css">
     <title>List Contact</title>
 </head>
 <body>
-    <header class="header">
-        <h1>Contact List JS</h1>
-        <a href="github.com">GitHub link</a>
-    </header>
-    <div data-contacts class="contact-list">
-        <div class="menu wrapper">
-            <div class="menu__inputs">
-                <input data-contacts-table-type-input data-contacts-table-name-input type="text" class="menu__input">
-                <input data-contacts-table-type-input data-contacts-table-position-input type="text" class="menu__input">
-                <input data-contacts-table-type-input data-contacts-table-phone-input type="tel" class="menu__input">
-            </div>
-            <div class="menu__buttons">
-                <button data-contacts-table-type-button data-contacts-table-add-button class="menu__button">Add</button>
-                <button data-contacts-table-type-button data-contacts-table-clear-button class="menu__button">Clear List</button>
-                <button data-contacts-table-type-button data-contacts-table-search-button  class="menu__button">Search</button>
-            </div>
+<header class="header">
+    <h1>Contact List JS</h1>
+    <a href="https://github.com">GitHub link</a>
+</header>
+<div data-contacts class="contact-list">
+    <div class="menu wrapper">
+        <div class="menu__inputs">
+            <input data-input data-type="name" type="text" placeholder="Имя" class="menu__input">
+            <input data-input data-type="position" type="text" placeholder="Должность" class="menu__input">
+            <input data-input data-type="phone" type="tel" placeholder="Номер телефона" class="menu__input">
         </div>
-        <div data-contacts-table class="contacts-table">
-            <div class="contacts-table__column column">
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="A" class="item__letter">A</div>
-                </div>
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="B" class="item__letter">B</div>
-                </div>
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="C" class="item__letter">C</div>
-                </div>
-                <div data-contacts-table-first-letter="D" class="column__item item">
-                    <div class="item__letter">D</div>
-                </div>
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="E" class="item__letter">E</div>
-                </div>
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="F" class="item__letter">F</div>
-                </div>
-                <div class="column__item item">
-                    <div  data-contacts-table-first-letter="G" class="item__letter">G</div>
-                </div>
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="H" class="item__letter">H</div>
-                </div>
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="I" class="item__letter">I</div>
-                </div>
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="J" class="item__letter">J</div>
-                </div>
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="K" class="item__letter">K</div>
-                </div>
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="L" class="item__letter">L</div>
-                </div>
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="M" class="item__letter">M</div>
-                </div>
-            </div>
-            <div data-contacts-table-column class="contacts-table__column column">
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="N" class="item__letter">N</div>
-                </div>
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="O" class="item__letter">O</div>
-                </div>
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="P" class="item__letter">P</div>
-                </div>
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="Q" class="item__letter">Q</div>
-                </div>
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="R" class="item__letter">R</div>
-                </div>
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="S" class="item__letter">S</div>
-                </div>
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="T" class="item__letter">T</div>
-                </div>
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="U" class="item__letter">U</div>
-                </div>
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="V" class="item__letter">V</div>
-                </div>
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="w" class="item__letter">W</div>
-                </div>
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="X" class="item__letter">X</div>
-                </div>
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="Y" class="item__letter">Y</div>
-                </div>
-                <div class="column__item item">
-                    <div data-contacts-table-first-letter="Z" class="item__letter">Z</div>
-                </div>
-            </div>
+        <div class="menu__buttons">
+            <button data-button data-action="add" class="menu__button">Add</button>
+            <button data-button data-action="clear" class="menu__button">Clear List</button>
+            <button data-button data-action="search" class="menu__button">Search</button>
         </div>
-
     </div>
-    <script src="./js/index.js" ></script>
+    <div data-table class="contacts-table">
+        <div class="contacts-table__column column">
+            <div data-column-item class="column__item item">
+                <div data-first-letter="A" class="item__letter">A</div>
+            </div>
+            <div data-column-item class="column__item item">
+                <div data-first-letter="B" class="item__letter">B</div>
+            </div>
+            <div data-column-item class="column__item item">
+                <div data-first-letter="C" class="item__letter">C</div>
+            </div>
+            <div data-column-item class="column__item item">
+                <div data-first-letter="D" class="item__letter">D</div>
+            </div>
+            <div data-column-item class="column__item item">
+                <div data-first-letter="E" class="item__letter">E</div>
+            </div>
+            <div data-column-item class="column__item item">
+                <div data-first-letter="F" class="item__letter">F</div>
+            </div>
+            <div data-column-item class="column__item item">
+                <div data-first-letter="G" class="item__letter">G</div>
+            </div>
+            <div data-column-item class="column__item item">
+                <div data-first-letter="H" class="item__letter">H</div>
+            </div>
+            <div data-column-item class="column__item item">
+                <div data-first-letter="I" class="item__letter">I</div>
+            </div>
+            <div data-column-item class="column__item item">
+                <div data-first-letter="J" class="item__letter">J</div>
+            </div>
+            <div data-column-item class="column__item item">
+                <div data-first-letter="K" class="item__letter">K</div>
+            </div>
+            <div data-column-item class="column__item item">
+                <div data-first-letter="L" class="item__letter">L</div>
+            </div>
+            <div data-column-item class="column__item item">
+                <div data-first-letter="M" class="item__letter">M</div>
+            </div>
+        </div>
+        <div data-table-column class="contacts-table__column column">
+            <div class="column__item item">
+                <div data-first-letter="N" class="item__letter">N</div>
+            </div>
+            <div class="column__item item">
+                <div data-first-letter="O" class="item__letter">O</div>
+            </div>
+            <div class="column__item item">
+                <div data-first-letter="P" class="item__letter">P</div>
+            </div>
+            <div class="column__item item">
+                <div data-first-letter="Q" class="item__letter">Q</div>
+            </div>
+            <div class="column__item item">
+                <div data-first-letter="R" class="item__letter">R</div>
+            </div>
+            <div class="column__item item">
+                <div data-first-letter="S" class="item__letter">S</div>
+            </div>
+            <div class="column__item item">
+                <div data-first-letter="T" class="item__letter">T</div>
+            </div>
+            <div class="column__item item">
+                <div data-first-letter="U" class="item__letter">U</div>
+            </div>
+            <div class="column__item item">
+                <div data-first-letter="V" class="item__letter">V</div>
+            </div>
+            <div class="column__item item">
+                <div data-first-letter="W" class="item__letter">W</div>
+            </div>
+            <div class="column__item item">
+                <div data-first-letter="X" class="item__letter">X</div>
+            </div>
+            <div class="column__item item">
+                <div data-first-letter="Y" class="item__letter">Y</div>
+            </div>
+            <div class="column__item item">
+                <div data-first-letter="Z" class="item__letter">Z</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="./js/index.js"></script>
 </body>
 </html>

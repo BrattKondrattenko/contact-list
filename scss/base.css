@@ -94,4 +94,8 @@ h1 {
   float: right;
 }
 
+.error {
+  background: red;
+}
+
 /*# sourceMappingURL=base.css.map */
