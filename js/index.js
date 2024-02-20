@@ -1,4 +1,11 @@
-const initContact = () => {
+import {renderMain, initialState} from "./setLanguage.mjs";
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    renderMain()
+
+    let contacts = { ...initialState };
+
     const selectors = {
         root: '[data-contacts]',
         input: '[data-input]',
@@ -7,24 +14,20 @@ const initContact = () => {
         column: '[data-column]',
         letter: '[data-first-letter]',
         columnItem: '[data-column-item]',
+
+        modal: '[data-modal]',
+        inputModal: '[data-input-modal]'
     };
-
-    const initialState = {};
-
-    // Генерация начального состояния по алфавиту
-    for (let charCode = 65; charCode <= 90; charCode++) {
-        const letter = String.fromCharCode(charCode);
-        initialState[letter] = [{ count: 0 }];
-    }
-
-    let contacts = { ...initialState };
 
     const rootElement = document.querySelector(selectors.root);
 
+    const modalWindow = document.querySelector(selectors.modal)
     const inputElements = rootElement.querySelectorAll(selectors.input);
+    const inputModal = rootElement.querySelector(selectors.inputModal)
 
     const addButtonElement = rootElement.querySelector(`${selectors.button}[data-action="add"]`);
     const clearButtonElement = rootElement.querySelector(`${selectors.button}[data-action="clear"]`);
+    const searchButtonElement = rootElement.querySelector(`${selectors.button}[data-action="search"]`);
 
     const tableElement = rootElement.querySelector(selectors.table);
 
@@ -54,13 +57,13 @@ const initContact = () => {
         clearInput()
     };
 
-    const validatePhone = (phone) => {
-        return /^\+\d{5,}$/.test(phone);
-    };
+    const phoneLength = 5;
+    const regexpForPhone = new RegExp(`^\\+\\d{${phoneLength},}$`);
 
-    const validateName = (name) => {
-        return name.length >= 2;
-    };
+    const validatePhone = (phone) => regexpForPhone.test(phone)
+
+    const validateName = (name) => name.length >= 2
+
 
     const checkValidate = () => {
         inputElements.forEach((input) => {
@@ -96,22 +99,6 @@ const initContact = () => {
 
     }
 
-    const renderCount = (contactContainer, firstLetter) => {
-        const contactCount = contacts[firstLetter][0];
-        if (contactCount) {
-            let countElement = contactContainer.querySelector(".contact-count");
-            if (!countElement) {
-                countElement = document.createElement("span");
-                countElement.classList.add("contact-count");
-                contactContainer.prepend(countElement);
-            }
-            countElement.textContent = contactCount.count;
-            if (contactCount.count === 0) {
-                countElement.remove();
-            }
-        }
-    };
-
     const renderContacts = (contact, firstLetter) => {
         let contactContainer = document.querySelector(`[data-first-letter="${firstLetter}"]`);
 
@@ -124,9 +111,25 @@ const initContact = () => {
         contactElement.innerHTML =
             `<p>id: ${contact.id} <br> name: ${contact.name} <br>phone: ${contact.phone} </p>
         <br>
-        <span data-contacts-table-delete-contact class="delete-contact">X</span>`;
+        <span class="delete-contact">X</span>`;
 
         const contactElements = contactContainer.querySelectorAll('.added-contact');
+
+        const deleteButton = contactElement.querySelector('.delete-contact');
+
+        deleteButton.addEventListener('click', (e) => {
+            console.log(e)
+            const contactParent = e.target.closest('.added-contact');
+            const contactContainer = contactParent.closest('.item__letter');
+
+            console.log(contactContainer)
+            const firstLetter = contactContainer.dataset.firstLetter;
+            const contactId = parseInt(contactParent.dataset.contactId);
+
+            removeContactUI(firstLetter, contactId)
+
+            contactParent.remove();
+        });
 
         if (contactElements.length > 0 && !contactElements[0].classList.contains('hidden')) {
             contactElement.classList.remove('hidden');
@@ -135,7 +138,7 @@ const initContact = () => {
         }
 
         contactContainer.appendChild(contactElement);
-        renderCount(contactContainer, firstLetter);
+        renderCount(firstLetter);
     };
 
     const addContact = () => {
@@ -164,20 +167,6 @@ const initContact = () => {
         }
     };
 
-    const removeContactUI = (e) => {
-        if (e.target.classList.contains('delete-contact')) {
-            const contactParent = e.target.closest('.added-contact');
-            const contactContainer = contactParent.closest('.item__letter');
-            const firstLetter = contactContainer.dataset.firstLetter;
-            const contactId = parseInt(contactParent.dataset.contactId);
-
-            removeContactDB(contactId);
-            contactParent.remove();
-
-            renderCount(contactContainer, firstLetter);
-        }
-    }
-
     const resetAllCountDB = () => {
         for (let key in contacts) {
             contacts[key][0].count = 0;
@@ -203,18 +192,79 @@ const initContact = () => {
     inputElements.forEach((input) =>
         input.addEventListener('input', (e) => {
             checkInputs(e)
-    }))
+        }))
 
-    tableElement.addEventListener('click', (e) => {
-        removeContactUI(e)
-    });
+    const removeContactUI = (firstLetter, contactId) => {
+        removeContactDB(contactId);
+        renderCount(firstLetter);
+    }
+
+    const renderCount = (firstLetter) => {
+        const contactContainer = document.querySelector(`[data-first-letter="${firstLetter}"]`)
+        const contactCount = contacts[firstLetter][0];
+        if (contactCount) {
+            let countElement = contactContainer.querySelector(".contact-count");
+            if (!countElement) {
+                countElement = document.createElement("span");
+                countElement.classList.add("contact-count");
+                contactContainer.prepend(countElement);
+            }
+            countElement.textContent = contactCount.count;
+            if (contactCount.count === 0) {
+                countElement.remove();
+            }
+        }
+    };
 
     columnItemElements.forEach((item) => {
         item.addEventListener('click', (e) => {
             toggleActive(e)
         });
     });
-};
+
+    const modalCloseButton = document.querySelector('.modal__close')
+    modalCloseButton.addEventListener('click', () => {
+        modalWindow.classList.toggle('active')
+    })
+
+    searchButtonElement.addEventListener('click', () => {
+        modalWindow.classList.toggle('active')
+    })
+
+    const modalContent = document.querySelector('.modal__content')
+
+    inputModal.addEventListener('input', (e) => {
+        let value = e.target.value.trim()
+        const allAddedContacts = document.querySelectorAll('.added-contact')
+        if (value !== '') {
+            allAddedContacts.forEach((item) => {
+                const contactText = item.querySelector('p').textContent;
+                const contactName = contactText.split('name: ')[1].split('phone:')[0].trim();
+
+                if (contactName.startsWith(value)) {
+                    const itemLetter = item.closest('.item__letter')
+                    item.classList.add('active')
+                    const itemLetterClone = itemLetter.cloneNode(true)
+                    modalContent.appendChild(itemLetterClone)
+                } else {
+                    const itemLetter = item.closest('.item__letter')
+                    itemLetter.remove()
+                }
+            })
+        }
+    })
+});
 
 
-document.addEventListener('DOMContentLoaded', initContact);
+
+// tableElement.addEventListener('click', (e) => {
+//     if (e.target.classList.contains('delete-contact')) {
+//         const contactParent = e.target.closest('.added-contact');
+//         const contactContainer = contactParent.closest('.item__letter');
+//         const firstLetter = contactContainer.dataset.firstLetter;
+//         const contactId = parseInt(contactParent.dataset.contactId);
+//
+//         removeContactUI(firstLetter, contactId)
+//         contactParent.remove();
+//     }
+// });
