@@ -7,7 +7,7 @@ const renderMain = () => {
     const cyrillicZCharCode = 1071; // Я
 
 
-    const selectedLanguage = prompt('Выберите язык (английский, русский):');
+    const selectedLanguage = 'английский'
 
     const setAlphabet = (aCharCode, zCharCode) => {
         for (let currentCharCode = aCharCode; currentCharCode <= zCharCode; currentCharCode++) {
@@ -17,24 +17,23 @@ const renderMain = () => {
     }
 
     const renderAlphabetUI = (alphabet) => {
-        const divsColumnItem = document.querySelector('.contacts-table__column ')
+        const contactsTable = document.querySelector('.contacts-table');
+        contactsTable.innerHTML = ''; // Очищаем предыдущий контент
 
-        alphabet.forEach((_, index) => {
+        alphabet.forEach((letter, index) => {
+            const columnItem = document.createElement('div');
+            columnItem.classList.add('column__item', 'item');
+            columnItem.setAttribute('data-column-item', '');
 
-            const columnItem = document.createElement('div')
-            columnItem.classList.add('column__item', 'item')
-            columnItem.setAttribute('data-column-item', '')
+            const itemLetter = document.createElement('div');
+            itemLetter.classList.add('item__letter');
+            itemLetter.setAttribute('data-first-letter', letter);
+            itemLetter.textContent = letter;
+            columnItem.appendChild(itemLetter);
 
-            const itemLetter = document.createElement('div')
-            const letter = alphabet[index]
-            itemLetter.classList.add('item__letter')
-            itemLetter.setAttribute('data-first-letter', letter)
-            itemLetter.textContent = letter
-            columnItem.appendChild(itemLetter)
-
-            divsColumnItem.appendChild(columnItem)
-        })
-    }
+            contactsTable.appendChild(columnItem); // Добавляем непосредственно в .contacts-table
+        });
+    };
 
     const render = (selectedLanguage) => {
         let alphabetToRender

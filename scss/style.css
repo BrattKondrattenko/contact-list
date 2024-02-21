@@ -54,11 +54,12 @@ body {
 }
 
 .contacts-table {
-  border: 1px solid #c23030;
-  display: flex;
-  flex-wrap: wrap;
-  max-height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
   width: 100%;
+  padding: 10px;
+  border: 1px solid #c23030;
 }
 .contacts-table__column {
   padding: 10px;
@@ -66,8 +67,10 @@ body {
 }
 
 .column__item {
-  margin: 0 20px 20px 0;
+  flex: 1 0 21%;
   border: 1px solid #144fd2;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .item__letter {
@@ -82,19 +85,6 @@ body {
 
 .delete-contact {
   cursor: pointer;
-}
-
-.hidden {
-  display: none;
-}
-
-.active {
-  display: block;
-}
-
-.item__letter > span {
-  display: inline;
-  float: right;
 }
 
 .error {
@@ -144,8 +134,24 @@ body {
   width: 100%;
   padding: 20px;
 }
+.modal__button-show {
+  padding: 20px;
+}
 
 .added-contact_active {
+  display: block;
+}
+
+.count-element {
+  display: inline;
+  float: right;
+}
+
+.hidden {
+  display: none;
+}
+
+.active {
   display: block;
 }
 
